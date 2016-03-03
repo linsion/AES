@@ -17,8 +17,8 @@ extension NSData {
         key.getCString(&keyPtr, maxLength: keyLength, encoding: NSUTF8StringEncoding)
         var output = ""
         var dataOutMoved:Int = 0
-        let status = CCCrypt(0, 0, 0x0001, keyPtr, kCCKeySizeAES256, nil, self.bytes, self.length, &output, self.length + kCCKeySizeAES256, &dataOutMoved)
-        if status == 0 {
+        let status = CCCrypt(UInt32(kCCEncrypt), UInt32(kCCAlgorithmAES), UInt32(kCCOptionPKCS7Padding), keyPtr, kCCKeySizeAES256, nil, self.bytes, self.length, &output, self.length + kCCKeySizeAES256, &dataOutMoved)
+        if status == Int32(kCCSuccess) {
             return NSData(bytes: &output, length: dataOutMoved)
         }
         return nil
@@ -30,8 +30,8 @@ extension NSData {
         key.getCString(&keyPtr, maxLength: keyLength, encoding: NSUTF8StringEncoding)
         var output = ""
         var dataOutMoved:Int = 0
-        let status = CCCrypt(1, 0, 0x0001, keyPtr, kCCKeySizeAES256, nil, self.bytes, self.length, &output, self.length + kCCKeySizeAES256, &dataOutMoved)
-        if status == 0 {
+        let status = CCCrypt(UInt32(kCCDecrypt), UInt32(kCCAlgorithmAES), UInt32(kCCOptionPKCS7Padding), keyPtr, kCCKeySizeAES256, nil, self.bytes, self.length, &output, self.length + kCCKeySizeAES256, &dataOutMoved)
+        if status == Int32(kCCSuccess) {
             return NSData(bytes: &output, length: dataOutMoved)
         }
         return nil
